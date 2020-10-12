@@ -1,68 +1,108 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Pitfalls
 
-## Available Scripts
+- `import { React } from 'react'` will cause issues (e.g. reading route parameters with `props.match.params.whatever`). Make sure you do `import React from 'react'`.
 
-In the project directory, you can run:
+### Setting up a new project
 
-### `yarn start`
+    npm install react-router-dom@5.0.0 bootstrap@4.3.1
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Mock API locally
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Allows us to have a local mocked API. Requires us to set up a server (json-server) reading from a file and returning it.
 
-### `yarn test`
+    npm install -D cross-env@5.2.0 npm-run-all@4.1.5 json-server@0.15.0
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- `cross-env` - allows for setting environment variables in a cross-platform manner. We are using it to set REACT_APP_API_URL to point to Mock API. Every environment variable prefixed with "REACT_APP" is read by the create_react_app and every reference to it is changed to the underlying value.
+- `npm-run-all` allows running multiple scripts in parallel.
+- `run-p` is installed with npm-run-all package. It allows running multiple npm scripts in parallel. You can find it in the `packages.json` file.
 
-### `yarn build`
+### Calling APIs
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+From `componentDidMount()`. This is the first lifecycle method you are allowed to call an external API from. If using functional components you can call an API via the network using `useEffect()` hook, but make sure to include `[]` as second argument.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Hooks
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Can't be run inside if statement etc. Must be declared on top-level.
+- Only with functional components.
+- `useState` - const [var, setVar] = setState("");
+- `useEffect` - two ways it gets ran:
+  - Called immediately after every render. It allows the caller to apply side-effects every time React component renders.
+  - Called every time any of the dependencies change. Caller must list all dependencies. This is a list of variables from state or props. If you provide an empty array, useEffect is called only on mount.
+  - You can return a function to be called once the component is unmounted. This allows for cleaning up (e.g. timer id from setTimeout).
+  - Think of it as combining componentDidMount (when the component first renders), componentDidUpdate (on every state change) and componentWillUnmount (clean up).
 
-### `yarn eject`
+### Prop Types
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Only useful (and enabled, by default) during development.
+- Use them to document component API.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### React Router
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- If a component is loaded via <Route> component, it will have access to props history.
+- <BrowserRouter as Router>
+- <Route>
+- <Link> and <NavLink>
+- <Redirect> or history
+- <Switch>
+- <Prompt>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Forms
 
-## Learn More
+- Consult sample project.
+- Use `react-toastify` to notify user on save. We are displaying `<ToastContainer>` on the `<App>`, so you can call `toast.success()` from anywhere in the app.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Redux
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Three core principles:
+  - Immutable store
+  - Actions trigger change
+  - Reducers return updated state
 
-### Code Splitting
+#### Actions
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- Represents user intent.
+- An object. Must contain `type` property. All other data is optional, passed through property, representing the desired new state.
+- Created by action creators.
 
-### Analyzing the Bundle Size
+#### Store
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+- `store.dispatch()`, `store.getState()`, `store.subscribe(listener)`, store.replaceReducer()`.
+- Store is immutable. Why?
+  - By allowing only reducers to change the state, it is easy to understand where a change came from.
+  - If the state is referencing a new object in memory, it means the old object (representing the previous state) is no longer valid and this allows Redux to quickly deduce whether a change occurred. This is great for performance, since every state change results in a rerender.
+  - Facilitates debugging. Every state is represented by a specific instance of state object.
+- To change store, you will have to copy the state and make the change. You can do that with `Object.assign()` and spread operator. Both ways perform shallow copy. Make sure you go for deep copy only if something changed in that specific part of the state, otherwise you will be incurring unncecessary rerenders and slow down your application.
+- Arrays:
+  - use `.push()`, `.pop()` and `.reverse()` only if you previously copied the array (see above bulletpoint). These functions work on the target array.
+  - use immutable-friendly functions: `.map()`, `.reduce()`, `.filter()`, `.concat()`, spread operator, since these functions return a new array.
 
-### Making a Progressive Web App
+#### Reducers
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+- Takes `state` and an `action`, returning a new state.
 
-### Advanced Configuration
+- Must be pure functions, without any side-effects.
+- Don'ts:
+  - Do not call APIs from a reducer.
+  - Do not mutate arguments.
+  - Do not perform side-effects.
+  - Do not call non-pure functions. Reducer return value must depend only on input values.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+* Dos:
+  - _Every_ reducer is called dispatch. This means every reducer should check the action type and return immediately if the action type is meant for some other reducer.
+* Each reducer only handles its own slice of the store.
+* EAch reducer can handle one or more actions. Each action can be handled by one or more reducers.
 
-### Deployment
+#### mapStateToProps
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+- Limit parts of Redux state you want exposed to components as props.
 
-### `yarn build` fails to minify
+#### mapDispatchToProps
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- Wraps action creators in `dispatch()`.
+
+### Try out
+
+- npm `classNames` package.
+- npm `immer` package for immutable data changes. Others: `Immutable.js`
+
+* npm `redux-immutable-state-invariant` package, issuing a warning when you change Redux state directly. Run this only in development, it is expensive.
