@@ -71,7 +71,7 @@ From `componentDidMount()`. This is the first lifecycle method you are allowed t
   - By allowing only reducers to change the state, it is easy to understand where a change came from.
   - If the state is referencing a new object in memory, it means the old object (representing the previous state) is no longer valid and this allows Redux to quickly deduce whether a change occurred. This is great for performance, since every state change results in a rerender.
   - Facilitates debugging. Every state is represented by a specific instance of state object.
-- To change store, you will have to copy the state and make the change. You can do that with `Object.assign()` and spread operator. Both ways perform shallow copy. Make sure you go for deep copy only if something changed in that specific part of the state, otherwise you will be incurring unncecessary rerenders and slow down your application.
+- To modify store, you will have to copy the state and make the modification. You can do that with `Object.assign()` or spread operator. Both ways perform shallow copy. Make sure you go for deep copy only if something changed in that specific part of the state, otherwise you will be incurring unncecessary rerenders and slow down your application.
 - Arrays:
   - use `.push()`, `.pop()` and `.reverse()` only if you previously copied the array (see above bulletpoint). These functions work on the target array.
   - use immutable-friendly functions: `.map()`, `.reduce()`, `.filter()`, `.concat()`, spread operator, since these functions return a new array.
@@ -79,18 +79,23 @@ From `componentDidMount()`. This is the first lifecycle method you are allowed t
 #### Reducers
 
 - Takes `state` and an `action`, returning a new state.
-
 - Must be pure functions, without any side-effects.
 - Don'ts:
   - Do not call APIs from a reducer.
   - Do not mutate arguments.
   - Do not perform side-effects.
   - Do not call non-pure functions. Reducer return value must depend only on input values.
-
-* Dos:
+- Dos:
   - _Every_ reducer is called dispatch. This means every reducer should check the action type and return immediately if the action type is meant for some other reducer.
-* Each reducer only handles its own slice of the store.
-* EAch reducer can handle one or more actions. Each action can be handled by one or more reducers.
+  - Each reducer only handles its own slice of the store.
+  - Each reducer can handle one or more actions. Each action can be handled by one or more reducers.
+
+### react-redux
+
+- Integrates React and Redux
+- In charge of updating only relevant React components on state changes.
+- `Provider` wraps the app.
+- `Connect` connects container components to Redux.
 
 #### mapStateToProps
 
@@ -99,10 +104,21 @@ From `componentDidMount()`. This is the first lifecycle method you are allowed t
 #### mapDispatchToProps
 
 - Wraps action creators in `dispatch()`.
+- If not passed to `connect()`, then `.dispatch()` is injected to component's `props`.
 
-### Try out
+#### Cookbook
 
+1. Create action creator (`redux/actions/`).
+2. Create reducer and root reducer (`redux/reducers/`).
+3. Create store (`redux/configureStore.js`).
+4. Instantiate store and wrap your `<App>` in `<Provider>`.
+5. Connect your components to Redux one by one. Do that by calling `connect()`. Feed it `mapStateToProps` and `mapDispatchToProps`.
+
+### npm packages
+
+- 'redux'
+- 'react-redux'
+- `redux-immutable-state-invariant`
+- 'PropTypes' to document what the component expects. Enforced only in development environments, due to high cost.
 - npm `classNames` package.
 - npm `immer` package for immutable data changes. Others: `Immutable.js`
-
-* npm `redux-immutable-state-invariant` package, issuing a warning when you change Redux state directly. Run this only in development, it is expensive.
