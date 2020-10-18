@@ -14,7 +14,8 @@
     "react-scripts": "3.4.3",
     "react-toastify": "^5.1.1",
     "redux": "^4.0.5",
-    "redux-immutable-state-invariant": "^2.1.0"
+    "redux-immutable-state-invariant": "^2.1.0",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "run-p start:dev start:api",

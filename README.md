@@ -53,10 +53,22 @@ From `componentDidMount()`. This is the first lifecycle method you are allowed t
 
 ### Redux
 
-- Three core principles:
-  - Immutable store
-  - Actions trigger change
-  - Reducers return updated state
+#### Cookbook
+
+1. Create action creator (`redux/actions/`).
+2. Create reducer and feed it state and action.
+3. Create root reducer (`redux/reducers/`) by feeding it all the other reducers.
+4. Create store (`redux/configureStore.js`). Feed it root reducer and (optionally) initial state.
+5. Instantiate store and wrap your `<App>` in `<Provider>`. Every component now has Redux state available.
+6. Connect your components to Redux one by one using `connect()`. Feed it `mapStateToProps` and `mapDispatchToProps`.
+7. `mapStateToProps` defines which portion of state should be visible to the component.
+8. `mapDispatchToProps` allows access to Redux's `dispatch` via `this.props`. Use `bindActionCreators` to automatically wrap `dispatch` around all provided action creators.
+
+#### Core principles:
+
+- Immutable store
+- Actions trigger change
+- Reducers return updated state
 
 #### Actions
 
@@ -90,7 +102,7 @@ From `componentDidMount()`. This is the first lifecycle method you are allowed t
   - Each reducer only handles its own slice of the store.
   - Each reducer can handle one or more actions. Each action can be handled by one or more reducers.
 
-### react-redux
+#### react-redux
 
 - Integrates React and Redux
 - In charge of updating only relevant React components on state changes.
@@ -106,13 +118,17 @@ From `componentDidMount()`. This is the first lifecycle method you are allowed t
 - Wraps action creators in `dispatch()`.
 - If not passed to `connect()`, then `.dispatch()` is injected to component's `props`.
 
-#### Cookbook
+### Async Redux
 
-1. Create action creator (`redux/actions/`).
-2. Create reducer and root reducer (`redux/reducers/`).
-3. Create store (`redux/configureStore.js`).
-4. Instantiate store and wrap your `<App>` in `<Provider>`.
-5. Connect your components to Redux one by one. Do that by calling `connect()`. Feed it `mapStateToProps` and `mapDispatchToProps`.
+#### Thunks
+
+- Type of Redux middleware.
+- A function that wraps an expression to delay its evaluation.
+- Thunk middleware checks if you are trying to dispatch a function instead of an action. If so, it will:
+  - Feed the function state: `dispatch` and `getState`. It allows inject an additional argument so you can pass it an external library, e.g. Axios for making API calls.
+  - Call the function you fed it (e.g. an API call).
+  - kamion
+- Using thunks has no impact on your components. Your components have no knowledge whether your action creators are synchronous or asynchronous.
 
 ### npm packages
 

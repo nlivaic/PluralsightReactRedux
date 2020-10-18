@@ -3,7 +3,7 @@ import Header from "./common/Header";
 import { Route, Switch, Redirect } from "react-router-dom";
 import HomePage from "./HomePage";
 import CoursesPage from "./CoursesPage";
-import CoursesPage1 from "./CoursesPage1";
+import AuthorsPage from "./AuthorsPage";
 import AboutPage from "./AboutPage";
 import PageNotFound from "./PageNotFound";
 import ManageCoursePage from "./ManageCoursePage";
@@ -22,7 +22,8 @@ const App = () => {
         <Header />
         <Switch>
           <Route path="/" component={HomePage} exact />
-          <Route path="/courses" component={CoursesPage1} />
+          <Route path="/courses" component={CoursesPage} />
+          <Route path="/authors" component={AuthorsPage} />
           <Route path="/about" component={AboutPage} />
           <Redirect from="/about-page" to="/about" />
           <Route path="/course/:slug" component={ManageCoursePage} />
