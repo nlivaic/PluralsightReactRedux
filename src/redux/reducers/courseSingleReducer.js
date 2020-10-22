@@ -10,6 +10,10 @@ export default function courseSingleReducer(
       return action.course;
     case actionTypes.CLEAR_COURSE:
       return {};
+    case actionTypes.CREATE_COURSE_SUCCESS:
+      return action.course;
+    case actionTypes.UPDATE_COURSE_SUCCESS:
+      return action.course;
     default:
       return state;
   }

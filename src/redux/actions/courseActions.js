@@ -2,7 +2,7 @@ import * as actionTypes from "./actionTypes";
 import * as coursesApi from "../../api/courseApi";
 
 export function createCourse(course) {
-  return { type: actionTypes.CREATE_COURSE, course };
+  return { type: actionTypes.CREATE_COURSE_SUCCESS, course };
 }
 
 function loadCoursesSuccess(courses) {
@@ -40,4 +40,24 @@ function loadCourseBySlugSuccess(course) {
 
 export function clearCourse() {
   return { type: actionTypes.CLEAR_COURSE };
+}
+
+export function saveCourse(course) {
+  return (dispatch) => {
+    return coursesApi
+      .saveCourse(course)
+      .then(() =>
+        !course.id
+          ? dispatch(createCourseSuccess(course))
+          : dispatch(updateCourseSuccess(course))
+      );
+  };
+}
+
+function updateCourseSuccess(course) {
+  return { type: actionTypes.UPDATE_COURSE_SUCCESS, course };
+}
+
+function createCourseSuccess(course) {
+  return { type: actionTypes.CREATE_COURSE_SUCCESS, course };
 }

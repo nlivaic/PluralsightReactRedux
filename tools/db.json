@@ -2,16 +2,16 @@
   "courses": [
     {
       "id": 1,
-      "title": "Securing React Apps with Auth0aa",
+      "title": "Securing React Apps with Auth0aaa",
       "slug": "react-auth0-authentication-security",
-      "authorId": 3,
+      "authorId": 1,
       "category": "JavaScript"
     },
     {
       "id": 2,
-      "title": "React: The Big Picture",
+      "title": "React: The Big Pictureaaa",
       "slug": "react-big-picture",
-      "authorId": 2,
+      "authorId": 1,
       "category": "JavaScript"
     },
     {
@@ -26,14 +26,14 @@
       "title": "Building a JavaScript Development Environment",
       "slug": "javascript-development-environment",
       "authorId": 1,
-      "category": "JavaScripta"
+      "category": "JavaScript"
     },
     {
       "id": 5,
       "title": "Building Applications with React and Redux",
       "slug": "react-redux-react-router-es6",
-      "authorId": 2,
-      "category": "JavaScripta"
+      "authorId": 1,
+      "category": "JavaScript"
     },
     {
       "id": 6,
@@ -65,10 +65,26 @@
     },
     {
       "id": 10,
-      "title": "Web Component Fundamentalsasdasdasd",
+      "title": "Web Component Fundamentals",
       "slug": "web-components-shadow-dom",
       "authorId": 3,
       "category": "HTML5"
+    },
+    {
+      "title": "Senior .NET Developer",
+      "authorId": 3,
+      "category": "adad",
+      "createdAt": 1603408639574,
+      "slug": "senior-net-developer",
+      "id": 11
+    },
+    {
+      "title": "23232",
+      "authorId": 1,
+      "category": "aaa",
+      "createdAt": 1603409103745,
+      "slug": "23232",
+      "id": 12
     }
   ],
   "authors": [

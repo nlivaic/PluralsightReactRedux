@@ -39,13 +39,17 @@ const ManageCoursePage = (props) => {
   }
 
   const handleInputChange = ({ target }) => {
-    setCourse({ ...course, [target.name]: target.value });
+    setCourse({
+      ...course,
+      [target.name]:
+        target.name === "authorId" ? parseInt(target.value, 10) : target.value,
+    });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (isFormValid()) {
-      courseApi.saveCourse(course).then(() => {
+      props.courseActions.saveCourse(course).then(() => {
         props.history.push("/courses");
         toast.success("Course saved!");
       });
@@ -95,6 +99,7 @@ ManageCoursePage.propTypes = {
   authors: PropTypes.array.isRequired,
   courseActions: PropTypes.object.isRequired,
   authorActions: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCoursePage);
