@@ -2,42 +2,45 @@ import React from "react";
 import TextInput from "./common/TextInput";
 import PropTypes from "prop-types";
 
-const CourseForm = (props) => {
+const CourseForm = ({ course, authors, errors, onSubmit, onInputChange }) => {
   return (
     <>
-      <form onSubmit={props.onSubmit}>
+      <form onSubmit={onSubmit}>
         <TextInput
           id="title"
           name="title"
-          onInputChange={props.onInputChange}
+          onInputChange={onInputChange}
           label="Title"
-          value={props.course.title}
-          error={props.errors.title}
+          value={course.title}
+          error={errors.title}
         />
         <label htmlFor="author">Author</label>
         <div className="field">
           <select
             id="author"
-            onChange={props.onInputChange}
+            onChange={onInputChange}
             name="authorId"
             className="form-control"
-            value={props.course.authorId || ""}
+            value={course.authorId || ""}
           >
             <option value=""></option>
-            <option value="1">Cory House</option>
-            <option value="2">Scott Allen</option>
+            {authors.map((author) => (
+              <option key={author.id} value={author.id}>
+                {author.name}
+              </option>
+            ))}
           </select>
-          {props.errors.author && (
-            <div className="alert alert-danger">{props.errors.author}</div>
+          {errors.author && (
+            <div className="alert alert-danger">{errors.author}</div>
           )}
         </div>
         <TextInput
           id="category"
           name="category"
-          onInputChange={props.onInputChange}
+          onInputChange={onInputChange}
           label="Category"
-          value={props.course.category}
-          error={props.errors.category}
+          value={course.category}
+          error={errors.category}
         />
         <button className="btn-primary">Save</button>
       </form>
@@ -47,6 +50,7 @@ const CourseForm = (props) => {
 
 CourseForm.propTypes = {
   course: PropTypes.object.isRequired,
+  authors: PropTypes.array.isRequired,
   errors: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,

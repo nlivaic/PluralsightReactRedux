@@ -55,8 +55,8 @@ const mapDispatchToProps = (dispatch) => {
 
 CoursesPage.propTypes = {
   courses: PropTypes.array.isRequired,
-  courseActions: PropTypes.func.isRequired,
-  authorActions: PropTypes.func.isRequired,
+  courseActions: PropTypes.object.isRequired,
+  authorActions: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);

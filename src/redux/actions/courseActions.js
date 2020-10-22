@@ -20,3 +20,24 @@ export function loadCourses() {
         throw error;
       });
 }
+
+export function loadCourseBySlug(slug) {
+  return (dispatch) => {
+    return coursesApi
+      .getCourseBySlug(slug)
+      .then((course) => {
+        dispatch(loadCourseBySlugSuccess(course));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+}
+
+function loadCourseBySlugSuccess(course) {
+  return { type: actionTypes.LOAD_COURSE_SUCCESS, course };
+}
+
+export function clearCourse() {
+  return { type: actionTypes.CLEAR_COURSE };
+}
