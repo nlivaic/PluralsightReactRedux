@@ -2,10 +2,22 @@ import React from "react";
 import TextInput from "./common/TextInput";
 import PropTypes from "prop-types";
 
-const CourseForm = ({ course, authors, errors, onSubmit, onInputChange }) => {
+const CourseForm = ({
+  course,
+  authors,
+  errors,
+  isSaving,
+  onSubmit,
+  onInputChange,
+}) => {
   return (
     <>
       <form onSubmit={onSubmit}>
+        {errors.onSave && (
+          <div className="alert alert-danger" role="alert">
+            {errors.onSave}
+          </div>
+        )}
         <TextInput
           id="title"
           name="title"
@@ -42,7 +54,12 @@ const CourseForm = ({ course, authors, errors, onSubmit, onInputChange }) => {
           value={course.category}
           error={errors.category}
         />
-        <button className="btn-primary">Save</button>
+        <button
+          disabled={isSaving}
+          className={isSaving ? "btn-secondary" : "btn-primary"}
+        >
+          {isSaving ? "Saving..." : "Save"}
+        </button>
       </form>
     </>
   );

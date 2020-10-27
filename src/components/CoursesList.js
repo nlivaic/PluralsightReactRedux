@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const CoursesList = ({ courses }) => {
+const CoursesList = ({ courses, onDelete }) => {
   return (
     <>
       <h2>Courses</h2>
@@ -26,6 +26,14 @@ const CoursesList = ({ courses }) => {
                 </td>
                 <td>{course.authorName}</td>
                 <td>{course.category}</td>
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => onDelete(course.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             );
           })}
@@ -51,6 +59,7 @@ CoursesList.propTypes = {
       category: PropTypes.string.isRequired,
     })
   ).isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default CoursesList;

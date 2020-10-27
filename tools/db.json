@@ -2,14 +2,14 @@
   "courses": [
     {
       "id": 1,
-      "title": "Securing React Apps with Auth0aaa",
+      "title": "Securing React Apps with Auth0",
       "slug": "react-auth0-authentication-security",
       "authorId": 1,
       "category": "JavaScript"
     },
     {
       "id": 2,
-      "title": "React: The Big Pictureaaa",
+      "title": "React: The Big Picture",
       "slug": "react-big-picture",
       "authorId": 1,
       "category": "JavaScript"
@@ -69,22 +69,6 @@
       "slug": "web-components-shadow-dom",
       "authorId": 3,
       "category": "HTML5"
-    },
-    {
-      "title": "Senior .NET Developer",
-      "authorId": 3,
-      "category": "adad",
-      "createdAt": 1603408639574,
-      "slug": "senior-net-developer",
-      "id": 11
-    },
-    {
-      "title": "23232",
-      "authorId": 1,
-      "category": "aaa",
-      "createdAt": 1603409103745,
-      "slug": "23232",
-      "id": 12
     }
   ],
   "authors": [

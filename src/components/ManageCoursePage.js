@@ -6,13 +6,17 @@ import CourseForm from "./CourseForm";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { bindActionCreators } from "redux";
-import * as courseApi from "../api/courseApi";
 import { PropTypes } from "prop-types";
 
 const ManageCoursePage = (props) => {
   const [errors, setErrors] = useState({});
-  const [course, setCourse] = useState({});
+  const [course, setCourse] = useState({
+    title: "",
+    authorId: null,
+    category: "",
+  });
   const [authors, setAuthors] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (props.match.params.slug) {
@@ -49,10 +53,17 @@ const ManageCoursePage = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (isFormValid()) {
-      props.courseActions.saveCourse(course).then(() => {
-        props.history.push("/courses");
-        toast.success("Course saved!");
-      });
+      props.courseActions
+        .saveCourse(course)
+        .then(() => {
+          props.history.push("/courses");
+          toast.success("Course saved!");
+        })
+        .catch((error) => {
+          setIsSaving(false);
+          setErrors({ onSave: error.message });
+        });
+      setIsSaving(true);
     }
   };
 
@@ -65,17 +76,22 @@ const ManageCoursePage = (props) => {
     return Object.keys(_errors).length === 0;
   };
 
+  const ManageOrAddLabel = !!props.match.params.slug ? "Manage" : "Add";
+
   return (
     <>
-      <h2>Manage Course</h2>
-      <span>{course.title}</span>
-      <CourseForm
-        course={course}
-        authors={props.authors}
-        errors={errors}
-        onInputChange={handleInputChange}
-        onSubmit={handleSubmit}
-      />
+      <h2>{ManageOrAddLabel} Course</h2>
+      <>
+        <span>{course.title}</span>
+        <CourseForm
+          course={course}
+          authors={props.authors}
+          errors={errors}
+          onInputChange={handleInputChange}
+          onSubmit={handleSubmit}
+          isSaving={isSaving}
+        />
+      </>
     </>
   );
 };
@@ -84,6 +100,7 @@ const mapStateToProps = (state) => {
   return {
     course: state.course,
     authors: state.authors,
+    isLoading: state.apiCallsInProgress > 0,
   };
 };
 

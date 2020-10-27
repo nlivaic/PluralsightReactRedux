@@ -5,11 +5,12 @@ import * as authorActions from "../redux/actions/authorActions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import Spinner from "../components/common/Spinner";
+import { toast } from "react-toastify";
 
 const CoursesPage = (props) => {
   // Due to [] as second argument, will run only on mount.
   useEffect(() => {
-    //const { courses, courseActions, authorActions } = props;
     if (props.courses.length === 0) {
       props.courseActions.loadCourses().catch((error) => {
         alert("Loading courses failed: " + error);
@@ -23,9 +24,18 @@ const CoursesPage = (props) => {
     // eslint-disable-next-line
   }, []);
 
+  const handleCourseDelete = (id) => {
+    debugger;
+    toast.success("Course deleted.");
+    props.courseActions
+      .deleteCourse(id)
+      .catch(() => toast.error("Error deleting course."));
+  };
+
   return (
     <>
-      <CoursesList courses={props.courses} />
+      {props.isLoading ? <Spinner /> : ""}
+      <CoursesList onDelete={handleCourseDelete} courses={props.courses} />
     </>
   );
 };
@@ -43,6 +53,7 @@ const mapStateToProps = (state, ownProps) => {
               ).name,
             };
           }),
+    isLoading: state.apiCallsInProgress > 0,
   };
 };
 
