@@ -24,12 +24,13 @@ const CoursesPage = (props) => {
     // eslint-disable-next-line
   }, []);
 
-  const handleCourseDelete = (id) => {
-    debugger;
+  const handleCourseDelete = async (id) => {
     toast.success("Course deleted.");
-    props.courseActions
-      .deleteCourse(id)
-      .catch(() => toast.error("Error deleting course."));
+    try {
+      await props.courseActions.deleteCourse(id);
+    } catch {
+      toast.error("Error deleting course.");
+    }
   };
 
   return (
