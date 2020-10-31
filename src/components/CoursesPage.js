@@ -28,8 +28,10 @@ const CoursesPage = (props) => {
     toast.success("Course deleted.");
     try {
       await props.courseActions.deleteCourse(id);
-    } catch {
-      toast.error("Error deleting course.");
+    } catch (error) {
+      toast.error("Error deleting course: " + error.message, {
+        autoClose: false,
+      });
     }
   };
 
