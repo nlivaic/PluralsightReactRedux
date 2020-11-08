@@ -39,12 +39,12 @@ From `componentDidMount()`. This is the first lifecycle method you are allowed t
 ### React Router
 
 - If a component is loaded via <Route> component, it will have access to props history.
-- <BrowserRouter as Router>
-- <Route>
-- <Link> and <NavLink>
-- <Redirect> or history
-- <Switch>
-- <Prompt>
+- `<BrowserRouter as Router>`
+- `<Route>`
+- `<Link>` and `<NavLink>`
+- `<Redirect>` or history
+- `<Switch>`
+- `<Prompt>`
 
 ### Forms
 
