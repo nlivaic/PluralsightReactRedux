@@ -53,6 +53,13 @@ From `componentDidMount()`. This is the first lifecycle method you are allowed t
 
 ### Redux
 
+#### npm packages
+
+    npm install redux
+    npm install react-redux
+    npm install redux-immutable-state-invariant
+    npm install redux-thunk
+
 #### Cookbook
 
 1. Create action creator (`redux/actions/`).
